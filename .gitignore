@@ -3,3 +3,9 @@
 *.iml
 build
 docs/api
+
+# Eclipse files & folders
+.project
+.classpath
+.settings/
+bin/

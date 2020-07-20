@@ -7,25 +7,30 @@ remotes {
     }
 }
 
-task deploy << {
-    ssh.run {
-        session(remotes.ev3dev) {
-            put from: "./build/libs/" + "${rootProject.name}" + "-all-" + version + ".jar", into: "/home/robot/"
-        }
+task deploy {
+	doLast {
+	    ssh.run {
+	        session(remotes.ev3dev) {
+	            put from: "./build/libs/" + "${rootProject.name}" + "-all-" + version + ".jar", into: "/home/robot/"
+	        }
+	    }
     }
 }
 deploy.dependsOn clean, fatJar
 
-task remoteRun << {
-    ssh.run {
-        session(remotes.ev3dev) {
-            println "java -server -jar /home/robot/" + "${rootProject.name}" + "-all-" + version + ".jar"
-            execute "java -server -jar /home/robot/" + "${rootProject.name}" + "-all-" + version + ".jar"
-        }
-    }
+task remoteRun {
+	doLast {
+	    ssh.run {
+	        session(remotes.ev3dev) {
+	            println "java -server -jar /home/robot/" + "${rootProject.name}" + "-all-" + version + ".jar"
+	            execute "java -server -jar /home/robot/" + "${rootProject.name}" + "-all-" + version + ".jar"
+	        }
+	    }
+	}
 }
 
-task deployAndRun << {
-
+task deployAndRun {
+    doLast {
+    }
 }
 deployAndRun.dependsOn deploy, remoteRun
